@@ -1,1 +1,1 @@
-diffusers==0.1.0
+pip install diffusers
