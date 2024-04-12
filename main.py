@@ -1,3 +1,4 @@
+pip install diffusers
 import streamlit as st
 from diffusers import StableDiffusionPipeline
 import torch
