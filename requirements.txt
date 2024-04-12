@@ -1,1 +1,2 @@
 pip install diffusers
+pip install importlib_metadata
