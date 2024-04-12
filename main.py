@@ -1,28 +1,23 @@
-from flask import Flask, request, jsonify
+import streamlit as st
 from diffusers import StableDiffusionPipeline
 import torch
-
-app = Flask(name)
 
 # Load the diffusion model with torch.float32 data type
 model_id = "nitrosocke/classic-anim-diffusion"
 pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float32)
 
-# Define the route to generate images based on prompts
-@app.route('/generate_image', methods=['POST'])
-def generate_image():
-    # Get the prompt from the request
-    prompt = request.json.get('prompt', '')
-
+# Define the function to generate images based on prompts
+def generate_image(prompt):
     # Generate image based on the prompt
     image = pipe(prompt).images[0]
 
-    # Save the image
-    image_path = f"./generated_image.png"
-    image.save(image_path)
+    return image
 
-    # Return the path to the generated image
-    return jsonify({'image_path': image_path})
+# Streamlit app layout
+st.title("Image Generation App")
+prompt = st.text_input("Enter Prompt")
+if st.button("Generate Image"):
+    if prompt:
+        image = generate_image(prompt)
+        st.image(image, caption='Generated Image', use_column_width=True)
 
-if name == 'main':
-    app.run(debug=True)
